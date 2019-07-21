@@ -19,7 +19,8 @@ const SIZES : { [s in ButtonSize]: string } = {
 type ButtonProps = {
     children: React.ReactNode,
     style: ButtonStyle,
-    size?: ButtonSize
+    size?: ButtonSize,
+    action?: () => void,
 }
 
 export const ButtonComponent = (props: ButtonProps) => {
@@ -36,7 +37,8 @@ export const ButtonComponent = (props: ButtonProps) => {
 
         );
     return <div
-        className={className}>
+        className={className}
+        onClick={props.action}>
         {props.children}
     </div>
 }

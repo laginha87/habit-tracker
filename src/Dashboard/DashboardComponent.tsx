@@ -1,14 +1,22 @@
-import { DateTime } from 'luxon';
 import * as React from 'react';
 
-import { DayDataExtended, WalletExtended } from '../model/types';
+import { DayDataExtended, WalletExtended, DayResult } from '../model/types';
 import { CheckboxesComponent } from './CheckboxesComponent';
 import { TotalsComponent } from './TotalsComponent';
 
-export type DashboardProps = {
+
+
+export type DashboardDispatchProps = {
+    setDayGood: () => void;
+    setDayBad: () => void;
+}
+
+export type DashboardStateProps = {
     wallet: WalletExtended;
     day: DayDataExtended;
 };
+
+type DashboardProps = DashboardStateProps & DashboardDispatchProps;
 
 export const DashboardComponent = (props: DashboardProps) => {
     const { day: {
@@ -25,7 +33,7 @@ export const DashboardComponent = (props: DashboardProps) => {
                 {dateFormatted}
             </div>
 
-            <CheckboxesComponent status={result} />
+            <CheckboxesComponent status={result} setDayBad={props.setDayBad} setDayGood={props.setDayGood} />
         </div>
 
 

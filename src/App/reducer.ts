@@ -1,25 +1,55 @@
-import { Wallet, DayData } from "../model/types";
+import { Wallet, DayData, DayResult } from "../model/types";
+import { DateTime } from "luxon";
 
-type State = {
-    days?: Array<DayData>;
-    wallet?: Wallet;
+export type AppState = {
+    days: Array<DayData>;
+    wallet: Wallet;
 }
 
-const TYPES = "";
+const SET_DAY_ACTIVITY = "SET_DAY_ACTIVITY"
 
-
-type Action = {
-    type: typeof TYPES;
+type SetDayActivityAction = {
+    type: typeof SET_DAY_ACTIVITY;
+    day: DateTime;
+    result: DayResult;
 }
 
-export const reducer = ( state : State = {}, action : Action ) => {
+export const setDayActivityAction = (day: DateTime, result: DayResult): SetDayActivityAction => (
+    {
+        day, result,
+        type: SET_DAY_ACTIVITY
+    }
+)
+
+type Action = SetDayActivityAction;
+
+const INITIAL_STATE : AppState = {
+    days: [],
+    wallet: {
+        total: 20
+    }
+}
+
+export const reducer = (state: AppState = INITIAL_STATE, action: Action) => {
     switch (action.type) {
-        case "":
-
-            break;
+        case SET_DAY_ACTIVITY:
+            const index = state.days.findIndex((value) => value.date.hasSame(action.day, 'day'));
+            const newEntry = { date: action.day, result: action.result };
+            let days;
+            if (index === - 1) {
+                days = [...state.days, newEntry]
+            } else {
+                days = [
+                    ...state.days.slice(0, index),
+                    newEntry,
+                    ...state.days.slice(index + 1, state.days.length)]
+            }
+            return {
+                ...state,
+                days
+            };
 
         default:
-            break;
+            return state;
     }
-    return state;
 }

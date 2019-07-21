@@ -18,16 +18,31 @@ export const DashboardComponent = (props: DashboardProps) => {
     } = props;
 
 
-    return <div>
-        <div>
-            <i className="fas fa-chevron-left"></i>
-            {dateFormatted}
+    return <div className="px-2 bg-grey-400 h-screen">
+        <div className='bg-blue-800 p-5 rounded mt-4'>
+            <div className='text-5xl mb-10 text-blue-100'>
+                {dateFormatted}
+            </div>
+
+            <CheckboxesComponent status={result} />
         </div>
 
-        <CheckboxesComponent status={result} />
 
-        <hr className="h-px bg-green-800" />
-        <TotalsComponent wallet={wallet} />
+        <div className='bg-blue-800 p-5 rounded mt-4'>
+            <div className='text-3xl text-blue-100'>
+                <div>
+                    Current Streak: 2
+                </div>
+                <div>
+                    Next Ok is Worth
+
+                    <div> 0.10€ or 10 mins</div>
+                </div>
+            </div>
+        </div>
+        <div className='bg-blue-800 p-5 rounded mt-4'>
+            <TotalsComponent wallet={wallet} />
+        </div>
     </div>;
 }
 

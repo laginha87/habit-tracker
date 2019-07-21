@@ -1,6 +1,11 @@
 @import '@fortawesome/fontawesome-free-webfonts';
 @import '@fortawesome/fontawesome-free-webfonts/css/fa-solid.css';
 
+body,
+html {
+  position: fixed;
+}
+
 @tailwind base;
 
 @tailwind components;

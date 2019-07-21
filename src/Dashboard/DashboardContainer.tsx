@@ -5,11 +5,12 @@ import { DateTime } from "luxon";
 
 
 const mapStateToProps = (): DashboardProps => {
+    const date = DateTime.fromFormat('2019-02-03', 'yyyy-mm-dd');
     return {
         day: {
-            date: DateTime.fromFormat('2019-02-03', 'yyyy-mm-dd'),
+            date,
             result: "bad",
-            dateFormatted: '2019-02-03'
+            dateFormatted: date.toLocaleString(DateTime.DATE_HUGE)
         },
         wallet: {
             euros: 1,

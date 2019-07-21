@@ -17,8 +17,8 @@ export const TotalsComponent = (props: Props) => {
             </div>
             <div className='w-1/2'>
                 <div>
-                    <ButtonComponent style='primary-outline'>
-                        Spend
+                    <ButtonComponent style='primary-outline' size="large">
+                        SPEND
                 </ButtonComponent>
                 </div>
             </div>

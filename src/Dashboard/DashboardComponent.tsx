@@ -17,10 +17,11 @@ export const DashboardComponent = (props: DashboardProps) => {
     }, wallet
     } = props;
 
+    const cardClass = 'bg-blue-800 p-5 rounded mt-4 shadow-lg';
 
-    return <div className="px-2 bg-grey-400 h-screen">
-        <div className='bg-blue-800 p-5 rounded mt-4'>
-            <div className='text-5xl mb-10 text-blue-100'>
+    return <div className="px-2 bg-grey-400 h-screen py-4">
+        <div className={cardClass}>
+            <div className='text-3xl mb-10 text-blue-100'>
                 {dateFormatted}
             </div>
 
@@ -28,7 +29,7 @@ export const DashboardComponent = (props: DashboardProps) => {
         </div>
 
 
-        <div className='bg-blue-800 p-5 rounded mt-4'>
+        <div className={cardClass}>
             <div className='text-3xl text-blue-100'>
                 <div>
                     Current Streak: 2
@@ -40,7 +41,7 @@ export const DashboardComponent = (props: DashboardProps) => {
                 </div>
             </div>
         </div>
-        <div className='bg-blue-800 p-5 rounded mt-4'>
+        <div className={cardClass}>
             <TotalsComponent wallet={wallet} />
         </div>
     </div>;

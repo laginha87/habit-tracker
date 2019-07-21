@@ -14,7 +14,8 @@
     "typescript": "^3.5.3"
   },
   "scripts": {
-    "start": "parcel src/index.html"
+    "start": "parcel src/index.html",
+    "build": "parcel src/index.html"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.9.0",

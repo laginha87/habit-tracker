@@ -1,0 +1,9 @@
+{
+    "lang": "en",
+    "name": "Tracker",
+    "description": "",
+    "short_name": "Tracker",
+    "display": "fullscreen",
+    "theme_color": "aliceblue",
+    "background_color": "red"
+  }

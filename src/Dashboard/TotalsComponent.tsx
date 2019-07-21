@@ -12,8 +12,8 @@ export const TotalsComponent = (props: Props) => {
 
         <div className="flex text-3xl justify-content text-blue-100">
             <div className='w-1/2'>
-                <div>{props.wallet.euros} €</div>
-                <div>{props.wallet.minutes} mins</div>
+                <div className='text-white-100'>{props.wallet.euros} €</div>
+                <div className='text-white-100'>{props.wallet.minutes} mins</div>
             </div>
             <div className='w-1/2'>
                 <div>

@@ -32,12 +32,12 @@ export const DashboardComponent = (props: DashboardProps) => {
         <div className={cardClass}>
             <div className='text-3xl text-blue-100'>
                 <div>
-                    Current Streak: 2
+                    Current Streak: <div className='text-white-100'>2</div>
                 </div>
                 <div>
                     Next Ok is Worth
 
-                    <div> 0.10€ or 10 mins</div>
+                    <div className='text-white-100'> 0.10€ or 10 mins</div>
                 </div>
             </div>
         </div>

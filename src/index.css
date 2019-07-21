@@ -1,0 +1,8 @@
+@import '@fortawesome/fontawesome-free-webfonts';
+@import '@fortawesome/fontawesome-free-webfonts/css/fa-solid.css';
+
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;

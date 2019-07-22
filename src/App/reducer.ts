@@ -22,7 +22,21 @@ export const setDayActivityAction = (day: DateTime, result: DayResult): SetDayAc
     }
 )
 
-type Action = SetDayActivityAction;
+const SET_DAY = "SET_DAY"
+
+type SetDayAction = {
+    type: typeof SET_DAY;
+    day: DateTime;
+}
+
+export const setDayAction = (day: DateTime): SetDayAction => (
+    {
+        day,
+        type: SET_DAY
+    }
+)
+
+type Action = SetDayActivityAction | SetDayAction;
 
 const INITIAL_STATE: AppState = {
     days: List.of(),
@@ -34,11 +48,23 @@ export const reducer = (state: AppState = INITIAL_STATE, action: Action) => {
         case SET_DAY_ACTIVITY:
             const index = state.days.findIndex((value) => value.date.hasSame(action.day, 'day'));
             const newEntry = { date: action.day, result: action.result };
+            let days;
+            if (index == -1) {
+                days = state.days.push(newEntry);
+            } else {
+                days = state.days.set(index, newEntry)
+            }
+
             return {
                 ...state,
-                days: state.days.set(index, newEntry)
+                days
             };
 
+        case SET_DAY:
+            return {
+                ...state,
+                day: action.day
+            };
         default:
             return state;
     }

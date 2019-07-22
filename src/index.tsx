@@ -5,7 +5,7 @@ import { ConnectedRouter } from 'connected-react-router'
 import { AppComponent } from './App';
 import configureStore, { history } from "./configureStore";
 
-const store = configureStore({});
+const store = configureStore();
 
 ReactDOM.render(
     <Provider store={store}>

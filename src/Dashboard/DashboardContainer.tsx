@@ -7,30 +7,31 @@ import { connect } from "react-redux";
 import { DateTime } from "luxon";
 import { setDayActivityAction, AppState } from "../App/reducer";
 import { State } from '../reducer';
-import { getResultForDay } from "../App/selectors";
+import { getResultForDay, getTotal, getChain } from "../App/selectors";
 
 
 const mapStateToProps = (state: State): DashboardStateProps => {
-    const date = DateTime.local();
+    const date = state.app.day;
     return {
         day: {
             date,
             result: getResultForDay(state, date),
             dateFormatted: date.toLocaleString(DateTime.DATE_HUGE)
         },
+        chain: getChain(state),
         wallet: {
-            euros: 1,
-            minutes: 10,
-            total: 10
+            euros: getTotal(state) * 0.1,
+            minutes: getTotal(state),
+            total: getTotal(state)
         }
     };
 }
 
 const mapDispatchToProps = (dispatch): DashboardDispatchProps => {
-    const today = DateTime.local();
+
     return {
-        setDayBad: () => dispatch(setDayActivityAction(today, "bad")),
-        setDayGood: () => dispatch(setDayActivityAction(today, "good")),
+        setDayBad: (day: DateTime) => dispatch(setDayActivityAction(day, "bad")),
+        setDayGood: (day: DateTime) => dispatch(setDayActivityAction(day, "good")),
     };
 }
 

@@ -1,9 +1,10 @@
 import { Wallet, DayData, DayResult } from "../model/types";
 import { DateTime } from "luxon";
+import { List } from 'immutable';
 
 export type AppState = {
-    days: Array<DayData>;
-    wallet: Wallet;
+    days: List<DayData>;
+    day: DateTime;
 }
 
 const SET_DAY_ACTIVITY = "SET_DAY_ACTIVITY"
@@ -23,11 +24,9 @@ export const setDayActivityAction = (day: DateTime, result: DayResult): SetDayAc
 
 type Action = SetDayActivityAction;
 
-const INITIAL_STATE : AppState = {
-    days: [],
-    wallet: {
-        total: 20
-    }
+const INITIAL_STATE: AppState = {
+    days: List.of(),
+    day: DateTime.local()
 }
 
 export const reducer = (state: AppState = INITIAL_STATE, action: Action) => {
@@ -35,18 +34,9 @@ export const reducer = (state: AppState = INITIAL_STATE, action: Action) => {
         case SET_DAY_ACTIVITY:
             const index = state.days.findIndex((value) => value.date.hasSame(action.day, 'day'));
             const newEntry = { date: action.day, result: action.result };
-            let days;
-            if (index === - 1) {
-                days = [...state.days, newEntry]
-            } else {
-                days = [
-                    ...state.days.slice(0, index),
-                    newEntry,
-                    ...state.days.slice(index + 1, state.days.length)]
-            }
             return {
                 ...state,
-                days
+                days: state.days.set(index, newEntry)
             };
 
         default:

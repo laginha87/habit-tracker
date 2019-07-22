@@ -6,8 +6,8 @@ type ButtonStyle = 'primary' | 'primary-outline';
 type ButtonSize = 'medium' | 'large';
 
 const STYLES: { [s in ButtonStyle]: string } = {
-    "primary": 'text-blue-800 bg-blue-100 border-2',
-    "primary-outline": 'text-blue-100 border-2'
+    "primary": 'text-white-100 bg-blue-100 border-2 border-white-100',
+    "primary-outline": 'text-white-100 border-2 border-white-100'
 }
 
 const SIZES : { [s in ButtonSize]: string } = {

@@ -1,6 +1,8 @@
 import * as React from "react";
 import { WalletExtended } from "../model/types";
 import { ButtonComponent } from "./ButtonComponent";
+import { DataRowComponent } from "./DataRowComponent";
+import { ListComponent } from "./ListComponent";
 
 export type Props = {
     wallet: WalletExtended
@@ -8,19 +10,25 @@ export type Props = {
 
 export const TotalsComponent = (props: Props) => {
     return <div>
-        <div className="text-4xl text-blue-100">Wallet</div>
 
-        <div className="flex text-3xl justify-content text-blue-100">
-            <div className='w-1/2'>
-                <div className='text-white-100'>{props.wallet.euros} €</div>
-                <div className='text-white-100'>{props.wallet.minutes} mins</div>
-            </div>
-            <div className='w-1/2'>
-                <div>
-                    <ButtonComponent style='primary-outline' size="large">
-                        SPEND
-                </ButtonComponent>
-                </div>
+        <ListComponent>
+            <DataRowComponent label="Credits">
+                {props.wallet.total}
+            </DataRowComponent>
+
+            <DataRowComponent label="Money">
+                {props.wallet.euros} €
+            </DataRowComponent>
+
+            <DataRowComponent label="Time">
+                {props.wallet.minutes} mins
+            </DataRowComponent>
+        </ListComponent>
+        <div className='w-full'>
+            <div>
+                <ButtonComponent style='primary-outline' size="large">
+                    SPEND
+            </ButtonComponent>
             </div>
         </div>
     </div>

@@ -7,16 +7,15 @@ import { connect } from "react-redux";
 import { DateTime } from "luxon";
 import { setDayActivityAction, AppState, setDayAction } from "../App/reducer";
 import { State } from '../reducer';
-import { getResultForDay, getTotal, getChain } from "../App/selectors";
+import { getResultForDay, getTotal, getChain, getDate, getDateFormatted } from "../App/selectors";
 
 
 const mapStateToProps = (state: State): DashboardStateProps => {
-    const { day: date } = state.app;
     return {
         day: {
-            date,
-            result: getResultForDay(state, date),
-            dateFormatted: date.toLocaleString(DateTime.DATE_HUGE)
+            date: getDate(state),
+            dateFormatted: getDateFormatted(state),
+            result: getResultForDay(state)
         },
         chain: getChain(state),
         wallet: {

@@ -34,21 +34,21 @@ export const DashboardComponent = (props: DashboardProps) => {
     }, wallet, chain, setDayBad, setDayGood, changeDay
     } = props;
 
-    return <div className="px-2 h-screen py-4 w-screen" style={{ background: 'linear-gradient(0deg, rgba(39,87,138,1) 0%, rgba(30,91,172,1) 53%, rgba(50,50,179,1) 93%)' }}>
-        <SectionComponent title="Activity">
-            <div className='mb-2'>
-                <ButtonComponent style="primary" action={() => changeDay(date.minus(Duration.fromObject({days: 1})))}><i className="fa fa-chevron-left"></i></ButtonComponent>
-                <div className='text-3xl mb-10 text-blue-100'>
-                    {dateFormatted}
-                </div>
-                <ButtonComponent style="primary" action={() => changeDay(date.plus(Duration.fromObject({days: 1})))}><i className="fa fa-chevron-right"></i></ButtonComponent>
+    return <div className="px-2 h-screen py-4 w-screen overflow-scroll" style={{ background: 'linear-gradient(0deg, rgba(39,87,138,1) 0%, rgba(30,91,172,1) 53%, rgba(50,50,179,1) 93%)' }}>
+        <div className='flex mb-10 items-center'>
+            <div className='w-8'> <ButtonComponent style="primary-outline" action={() => changeDay(date.minus(Duration.fromObject({ days: 1 })))}><i className="fa fa-chevron-left"></i></ButtonComponent></div>
+            <div className='text-3xl text-blue-100 flex-grow text-center'>
+                {dateFormatted}
             </div>
+            <div className='w-8'> <ButtonComponent style="primary-outline" action={() => changeDay(date.plus(Duration.fromObject({ days: 1 })))}><i className="fa fa-chevron-right"></i></ButtonComponent></div>
+        </div>
 
+        <div className='mb-2'>
             <CheckboxesComponent status={result} setDayBad={() => setDayBad(date)} setDayGood={() => setDayGood(date)} />
-        </SectionComponent>
+        </div>
 
+        <SectionComponent title="Activity">
 
-        <SectionComponent title="">
             <ListComponent>
                 <DataRowComponent label="Current Streak">
                     {chain}

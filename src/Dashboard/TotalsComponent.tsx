@@ -17,11 +17,11 @@ export const TotalsComponent = (props: Props) => {
             </DataRowComponent>
 
             <DataRowComponent label="Money">
-                {props.wallet.euros} €
+                {props.wallet.euros}
             </DataRowComponent>
 
             <DataRowComponent label="Time">
-                {props.wallet.minutes} mins
+                {props.wallet.minutes}
             </DataRowComponent>
         </ListComponent>
         <div className='w-full'>

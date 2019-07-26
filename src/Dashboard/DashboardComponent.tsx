@@ -54,7 +54,7 @@ export const DashboardComponent = (props: DashboardProps) => {
                     {chain}
                 </DataRowComponent>
                 <DataRowComponent label="Next Ok">
-                    {chainToValue(chain)} credits
+                    {chainToValue(chain + 1)} credits
                 </DataRowComponent>
             </ListComponent>
         </SectionComponent>

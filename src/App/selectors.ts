@@ -21,10 +21,12 @@ const calculateTotal = createSelector(getDays, (res: List<DayData>) => {
         if (el.result === "bad") {
             return { previous: el, chain: 0, total };
         }
-        const good = (el.date.day - previous.date.day == 1) && el.result == "good";
+        const good = (el.date.startOf('day').diff(previous.date.startOf('day'), 'days').days) && el.result == "good";
+        chain++;
+
         return {
             previous: el,
-            chain: good ? chain + 1 : 0,
+            chain: good ? chain : 0,
             total: total + (good ? chainToValue(chain) : 0)
         }
     }, { total: 0, chain: 0, previous: null });
@@ -55,8 +57,8 @@ export const getDateFormatted = createSelector(getDate, (date: DateTime): string
     }
 
     if (date.startOf('day').diff(DateTime.local().startOf('day'), 'day').days === -1) {
-        return 'Yesterday'
+        return 'Yesterday';
     }
 
-    return date.toLocaleString(DateTime.DATE_HUGE)
-}
+    return date.toLocaleString(DateTime.DATE_HUGE);
+})

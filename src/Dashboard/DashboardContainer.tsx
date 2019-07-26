@@ -19,8 +19,8 @@ const mapStateToProps = (state: State): DashboardStateProps => {
         },
         chain: getChain(state),
         wallet: {
-            euros: (getTotal(state) * 0.1),
-            minutes: getTotal(state),
+            euros: `${(getTotal(state) * 0.1).toFixed(2)} €`,
+            minutes: `${getTotal(state)} min`,
             total: getTotal(state)
         }
     };

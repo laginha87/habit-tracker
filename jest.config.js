@@ -9,5 +9,10 @@ module.exports = {
     "moduleNameMapper": {
       "src/(.*)$": "<rootDir>/src/$1",
       "assets/(.*)$": "<rootDir>/__mocks__/fileMock.js"
+    },
+    globals: {
+      'ts-jest': {
+        diagnostics: false
+      }
     }
 }

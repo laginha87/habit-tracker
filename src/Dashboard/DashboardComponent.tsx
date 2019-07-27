@@ -13,8 +13,8 @@ import { ButtonComponent } from './ButtonComponent';
 
 
 export type DashboardDispatchProps = {
-    setDayGood: (day: DateTime) => void;
-    setDayBad: (day: DateTime) => void;
+    setDayGood: (day: DateTime, result: DayResult) => void;
+    setDayBad: (day: DateTime, result: DayResult) => void;
     changeDay: (day: DateTime) => void;
 }
 
@@ -44,7 +44,7 @@ export const DashboardComponent = (props: DashboardProps) => {
         </div>
 
         <div className='mb-2'>
-            <CheckboxesComponent status={result} setDayBad={() => setDayBad(date)} setDayGood={() => setDayGood(date)} />
+            <CheckboxesComponent status={result} setDayBad={() => setDayBad(date, result)} setDayGood={() => setDayGood(date, result)} />
         </div>
 
         <SectionComponent title="Activity">

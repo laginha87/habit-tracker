@@ -11,7 +11,6 @@ type Props = {
 
 export const CheckboxesComponent = (props: Props) => {
     const { status, setDayBad, setDayGood } = props;
-
     return <div className='flex -ml-2'>
         <div className='ml-2 w-1/2'>
             <ButtonComponent style={status === 'good' ? 'primary' : 'primary-outline'} action={setDayGood}>

@@ -5,9 +5,10 @@ import {
 } from "./DashboardComponent";
 import { connect } from "react-redux";
 import { DateTime } from "luxon";
-import { setDayActivityAction, AppState, setDayAction } from "../App/reducer";
+import { setDayActivityAction, AppState, setDayAction, removeDayActivity } from "../App/reducer";
 import { State } from '../reducer';
 import { getResultForDay, getTotal, getChain, getDate, getDateFormatted } from "../App/selectors";
+import { DayResult } from "../model/types";
 
 
 const mapStateToProps = (state: State): DashboardStateProps => {
@@ -29,8 +30,20 @@ const mapStateToProps = (state: State): DashboardStateProps => {
 const mapDispatchToProps = (dispatch): DashboardDispatchProps => {
 
     return {
-        setDayBad: (day: DateTime) => dispatch(setDayActivityAction(day, "bad")),
-        setDayGood: (day: DateTime) => dispatch(setDayActivityAction(day, "good")),
+        setDayBad: (day: DateTime, currentStatus : DayResult) => {
+            if(currentStatus == 'bad') {
+                dispatch(removeDayActivity(day))
+            } else {
+                dispatch(setDayActivityAction(day, "bad"))
+            }
+        },
+        setDayGood: (day: DateTime, currentStatus : DayResult) => {
+            if(currentStatus == 'good') {
+                dispatch(removeDayActivity(day))
+            } else {
+                dispatch(setDayActivityAction(day, "good"))
+            }
+        },
         changeDay: (day: DateTime) => dispatch(setDayAction(day))
     };
 }

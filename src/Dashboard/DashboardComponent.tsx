@@ -63,7 +63,7 @@ export const DashboardComponent = (props: DashboardProps) => {
 
             <div className='w-full'>
                 <ButtonComponent style='primary-outline' size="large">
-                    SPEND
+                    <a href="/spend"> SPEND </a>
                 </ButtonComponent>
             </div>
         </SectionComponent>

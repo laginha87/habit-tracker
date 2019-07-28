@@ -4,6 +4,7 @@ import { WalletExtended } from '../model/types';
 import { WalletComponent } from '../common/WalletComponent';
 import { convertToEuros, convertToTime, convertFromTime, convertFromEuros } from '../App/selectors';
 import classnames from 'classnames';
+import { ButtonComponent } from '../common/ButtonComponent';
 
 
 
@@ -62,8 +63,12 @@ export const SpendComponent = (props: SpendProps) => {
     }
 
     return <div className="px-2 h-screen py-4 w-screen overflow-scroll" style={{ background: 'linear-gradient(0deg, rgba(39,87,138,1) 0%, rgba(30,91,172,1) 53%, rgba(50,50,179,1) 93%)' }}>
-        <div className='text-2xl text-blue-100 text-center' onClick={() => location.reload()}>
-            Spend
+        <div className='flex'>
+        <div className='w-8'> <ButtonComponent style="primary-outline"><a href='/'><i className="fa fa-chevron-left"></i></a></ButtonComponent></div>
+            <div className='text-2xl text-blue-100 text-center flex-grow' onClick={() => location.reload()}>
+                Spend
+            </div>
+
         </div>
 
         <Toggle toggle={toggle} updateToggle={toggleChange} />

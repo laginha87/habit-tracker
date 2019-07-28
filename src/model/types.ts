@@ -17,6 +17,6 @@ export type Wallet = {
 }
 
 export type WalletExtended = {
-    minutes: string;
-    euros: string;
+    minutes: number;
+    euros: number;
 } & Wallet;

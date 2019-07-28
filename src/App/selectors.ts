@@ -62,3 +62,13 @@ export const getDateFormatted = createSelector(getDate, (date: DateTime): string
 
     return date.toLocaleString(DateTime.DATE_HUGE);
 })
+
+export const convertToEuros = (credits : number) => parseFloat((credits * 0.1).toFixed(2))
+export const convertToTime = (credits : number) => credits * 10
+export const convertFromTime = (minutes : number) => minutes * 0.1
+
+export const getWalletExtended = createSelector(getTotal, (total) => ({
+    euros: convertToEuros(total),
+    minutes: convertToTime(total),
+    total
+}))

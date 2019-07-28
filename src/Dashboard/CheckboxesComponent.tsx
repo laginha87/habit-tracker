@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { DayResult } from "../model/types";
-import { ButtonComponent } from "./ButtonComponent";
+import { ButtonComponent } from "../common/ButtonComponent";
 
 type Props = {
     status?: DayResult;

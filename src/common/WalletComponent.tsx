@@ -1,36 +1,26 @@
 import * as React from "react";
 import { WalletExtended } from "../model/types";
-import { ButtonComponent } from "./ButtonComponent";
 import { DataRowComponent } from "./DataRowComponent";
 import { ListComponent } from "./ListComponent";
+
+import {formatMoney, formatTime} from '../App/formatters';
 
 export type Props = {
     wallet: WalletExtended
 };
 
-export const TotalsComponent = (props: Props) => {
-    return <div>
-
-        <ListComponent>
+export const WalletComponent = (props: Props) => {
+    const {total, euros, minutes} = props.wallet;
+    return <ListComponent>
             <DataRowComponent label="Credits">
-                {props.wallet.total}
+                {total}
             </DataRowComponent>
-
             <DataRowComponent label="Money">
-                {props.wallet.euros}
+                {formatMoney(euros)}
             </DataRowComponent>
-
             <DataRowComponent label="Time">
-                {props.wallet.minutes}
+                {formatTime(minutes)}
             </DataRowComponent>
         </ListComponent>
-        <div className='w-full'>
-            <div>
-                <ButtonComponent style='primary-outline' size="large">
-                    SPEND
-            </ButtonComponent>
-            </div>
-        </div>
-    </div>
 
 }

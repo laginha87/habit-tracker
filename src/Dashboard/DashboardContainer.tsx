@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import { DateTime } from "luxon";
 import { setDayActivityAction, AppState, setDayAction, removeDayActivity } from "../App/reducer";
 import { State } from '../reducer';
-import { getResultForDay, getTotal, getChain, getDate, getDateFormatted } from "../App/selectors";
+import { getResultForDay, getChain, getDate, getDateFormatted, getWalletExtended } from "../App/selectors";
 import { DayResult } from "../model/types";
 
 
@@ -19,11 +19,7 @@ const mapStateToProps = (state: State): DashboardStateProps => {
             result: getResultForDay(state)
         },
         chain: getChain(state),
-        wallet: {
-            euros: `${(getTotal(state) * 0.1).toFixed(2)} €`,
-            minutes: `${getTotal(state)} min`,
-            total: getTotal(state)
-        }
+        wallet: getWalletExtended(state)
     };
 }
 

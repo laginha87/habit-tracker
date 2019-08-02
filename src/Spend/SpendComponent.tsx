@@ -73,7 +73,7 @@ export const SpendComponent = (props: SpendProps) => {
 
         <Toggle toggle={toggle} updateToggle={toggleChange} />
 
-        <input type="number" className='bg-transparent text-right text-right text-2xl w-full focus-none outline-none text-white-100' value={spend} onChange={onChange} />
+        <input type="number" inputMode="decimal" className='bg-transparent text-right text-right text-2xl w-full focus-none outline-none text-white-100' value={spend} onChange={onChange} />
 
         <WalletComponent wallet={walletAfter}></WalletComponent>
     </div>;

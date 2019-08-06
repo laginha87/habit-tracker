@@ -1,13 +1,14 @@
 import * as React from "react";
 import classnames from 'classnames';
 
-type ButtonStyle = 'primary' | 'primary-outline';
+type ButtonStyle = 'primary' | 'primary-outline' | 'clean';
 
 type ButtonSize = 'medium' | 'large';
 
 const STYLES: { [s in ButtonStyle]: string } = {
     "primary": 'text-white-100 bg-blue-100 border-2 border-white-100',
-    "primary-outline": 'text-white-100 border-2 border-white-100'
+    "primary-outline": 'text-white-100 border-2 border-white-100',
+    'clean': 'text-white-100'
 }
 
 const SIZES : { [s in ButtonSize]: string } = {

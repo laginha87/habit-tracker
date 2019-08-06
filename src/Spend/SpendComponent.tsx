@@ -38,6 +38,39 @@ const Toggle = (props: ToggleProps) => {
     </div>
 }
 
+type InputProps = {
+    updateSpend: (i : number) => void;
+    value: number;
+}
+
+const MoneyInput = (props : InputProps) => {
+    const { updateSpend } = props;
+
+    const onChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.currentTarget.value
+        updateSpend(parseFloat(value === '' ? '0' : value))
+    }, [updateSpend]);
+
+    const value = props.value > 0 ? props.value.toFixed(2) : (0).toFixed(2);
+    return <input type="number" placeholder='0' inputMode="decimal" step='0.1' className='bg-transparent text-right text-right text-2xl w-full focus-none outline-none text-white-100' value={value} onChange={onChange} />
+}
+
+const TimeInput = (props: InputProps) => {
+    const { updateSpend, value } = props;
+
+    const onChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.currentTarget.value
+        updateSpend(parseFloat(value === '' ? '0' : value))
+    }, [updateSpend]);
+
+    return <div className='flex text-white-100 justify-end items-end text-2xl'>
+        <input className='bg-transparent   focus-none outline-none text-right w-12 text-right' type="number" placeholder='00' inputMode="decimal" step='1'  onChange={onChange} />
+        <div className=''>h</div>
+        <input className='bg-transparent   focus-none outline-none text-right w-12 text-right' type="number" placeholder='00' inputMode="decimal" step='5'  onChange={onChange} />
+        <div className=''>m</div>
+    </div>
+}
+
 export const SpendComponent = (props: SpendProps) => {
     const { wallet } = props;
 
@@ -51,10 +84,6 @@ export const SpendComponent = (props: SpendProps) => {
     const converter = toggle === "money" ? convertFromEuros : convertFromTime
     const credits = converter(spend);
 
-    const onChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        updateSpend(parseFloat(e.currentTarget.value))
-    }, [updateSpend]);
-
     const newCredits = wallet.total - credits;
     const walletAfter: WalletExtended = {
         total: newCredits,
@@ -62,9 +91,11 @@ export const SpendComponent = (props: SpendProps) => {
         minutes: convertToTime(newCredits)
     }
 
+    const InputComponent = toggle === 'money' ? MoneyInput : TimeInput
+
     return <div className="px-2 h-screen py-4 w-screen overflow-scroll" style={{ background: 'linear-gradient(0deg, rgba(39,87,138,1) 0%, rgba(30,91,172,1) 53%, rgba(50,50,179,1) 93%)' }}>
         <div className='flex'>
-        <div className='w-8'> <ButtonComponent style="primary-outline"><a href='/'><i className="fa fa-chevron-left"></i></a></ButtonComponent></div>
+            <div className='w-8'> <ButtonComponent style="primary-outline"><a href='/'><i className="fa fa-chevron-left"></i></a></ButtonComponent></div>
             <div className='text-2xl text-blue-100 text-center flex-grow' onClick={() => location.reload()}>
                 Spend
             </div>
@@ -73,9 +104,9 @@ export const SpendComponent = (props: SpendProps) => {
 
         <Toggle toggle={toggle} updateToggle={toggleChange} />
 
-        <input type="number" inputMode="decimal" className='bg-transparent text-right text-right text-2xl w-full focus-none outline-none text-white-100' value={spend} onChange={onChange} />
+        <InputComponent updateSpend={updateSpend} value={spend} />
 
         <WalletComponent wallet={walletAfter}></WalletComponent>
     </div>;
-}
+    }
 

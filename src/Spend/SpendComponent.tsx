@@ -9,7 +9,7 @@ import { ButtonComponent } from '../common/ButtonComponent';
 
 
 export type SpendDispatchProps = {
-
+    submitSpend(credits : number) : void
 }
 
 export type SpendStateProps = {
@@ -86,7 +86,7 @@ const TimeInput = (props: InputProps) => {
 }
 
 export const SpendComponent = (props: SpendProps) => {
-    const { wallet } = props;
+    const { wallet, submitSpend } = props;
 
     const [toggle, updateToggle] = React.useState<ToggleState>("money")
     const [spend, updateSpend] = React.useState(0)
@@ -95,6 +95,9 @@ export const SpendComponent = (props: SpendProps) => {
         updateToggle(toggle)
     }, [])
 
+    const submitValue = React.useCallback(() => {
+        submitSpend(spend)
+    }, [spend, submitSpend])
     const converter = toggle === "money" ? convertFromEuros : convertFromTime
     const credits = converter(spend);
 
@@ -121,6 +124,7 @@ export const SpendComponent = (props: SpendProps) => {
         <InputComponent updateSpend={updateSpend} value={spend} />
 
         <WalletComponent wallet={walletAfter}></WalletComponent>
+        <ButtonComponent style="primary" action={submitValue}> Submit </ButtonComponent>
     </div>;
     }
 

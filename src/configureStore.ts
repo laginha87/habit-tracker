@@ -21,7 +21,8 @@ const loadState = () => {
     return {
       app: {
         day: DateTime.fromISO(state.app.day),
-        days: List.of(...state.app.days.map(({result, date}) => ({result, date: DateTime.fromISO(date)})))
+        days: List.of(...state.app.days.map(({result, date}) => ({result, date: DateTime.fromISO(date)}))),
+        spent: List.of(...state.app.spent)
       }
     };
   } catch (err) {
@@ -52,11 +53,12 @@ export default function configureStore() {
   )
 
   store.subscribe(() => {
-    const {days, day} = store.getState().app;
+    const {days, day, spent} = store.getState().app;
     saveState({
       app: {
         day: day.toISO(),
-        days: (days as List<DayData>).toJS()
+        days: (days as List<DayData>).toJS(),
+        spent: (spent as List<number>).toJS(),
       }
     });
   });

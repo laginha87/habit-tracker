@@ -6,6 +6,8 @@ import {
 import { connect } from "react-redux";
 import { State } from '../reducer';
 import { getWalletExtended } from "../App/selectors";
+import { spendCreditsAction } from "../App";
+import { routerActions } from "connected-react-router";
 
 
 const mapStateToProps = (state: State): SpendStateProps => {
@@ -17,6 +19,10 @@ const mapStateToProps = (state: State): SpendStateProps => {
 const mapDispatchToProps = (dispatch): SpendDispatchProps => {
 
     return {
+        submitSpend: ( number : number) => {
+            dispatch(spendCreditsAction(number))
+            dispatch(routerActions.push('/'))
+        }
     };
 }
 

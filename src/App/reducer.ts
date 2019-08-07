@@ -5,6 +5,7 @@ import { List } from 'immutable';
 export type AppState = {
     days: List<DayData>;
     day: DateTime;
+    spent: List<number>;
 }
 
 const SET_DAY_ACTIVITY = "SET_DAY_ACTIVITY"
@@ -36,6 +37,21 @@ export const removeDayActivity = (day: DateTime): RemoveDayActivity => (
     }
 )
 
+const SPEND_CREDITS = "SPEND_CREDITS"
+
+type SpendCreditsAction = {
+    type: typeof SPEND_CREDITS;
+    spent: number;
+}
+
+export const spendCreditsAction = (spent: number): SpendCreditsAction => (
+    {
+        spent,
+        type: SPEND_CREDITS
+    }
+)
+
+
 const SET_DAY = "SET_DAY"
 
 type SetDayAction = {
@@ -50,11 +66,13 @@ export const setDayAction = (day: DateTime): SetDayAction => (
     }
 )
 
-type Action = SetDayActivityAction | SetDayAction | RemoveDayActivity;
+
+type Action = SetDayActivityAction | SetDayAction | RemoveDayActivity | SpendCreditsAction;
 
 const INITIAL_STATE: AppState = {
     days: List.of(),
-    day: DateTime.local()
+    day: DateTime.local(),
+    spent: List.of(),
 }
 
 export const reducer = (state: AppState = INITIAL_STATE, action: Action) => {
@@ -87,6 +105,11 @@ export const reducer = (state: AppState = INITIAL_STATE, action: Action) => {
                 ...state,
                 day: action.day
             };
+        case SPEND_CREDITS:
+            return {
+                ...state,
+                spent: state.spent.push(action.spent)
+            }
         default:
             return state;
     }

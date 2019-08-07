@@ -95,11 +95,13 @@ export const SpendComponent = (props: SpendProps) => {
         updateToggle(toggle)
     }, [])
 
-    const submitValue = React.useCallback(() => {
-        submitSpend(spend)
-    }, [spend, submitSpend])
     const converter = toggle === "money" ? convertFromEuros : convertFromTime
     const credits = converter(spend);
+
+    const submitValue = React.useCallback(() => {
+        submitSpend(credits)
+    }, [credits, toggle, submitSpend])
+
 
     const newCredits = wallet.total - credits;
     const walletAfter: WalletExtended = {

@@ -61,7 +61,11 @@ export const getDateFormatted = createSelector(getDate, (date: DateTime): string
         return 'Yesterday';
     }
 
-    return date.toLocaleString(DateTime.DATE_HUGE);
+    if (date.hasSame(DateTime.local(), 'week')) {
+        return date.toFormat('cccc')
+    }
+
+    return date.toFormat('dd/MM/yyyy');
 })
 
 export const convertToEuros = (credits : number) => parseFloat((credits * 0.1).toFixed(2))

@@ -40,7 +40,7 @@ export const DashboardComponent = (props: DashboardProps) => {
             <div className='text-2xl text-blue-100 flex-grow text-center' onClick={() => location.reload()}>
                 {dateFormatted}
             </div>
-            <div className='w-8'> <ButtonComponent style="clean" action={() => changeDay(date.plus(Duration.fromObject({ days: 1 })))}><i className="fa fa-chevron-right"></i></ButtonComponent></div>
+            { date.diffNow('days').days <= -1 &&  <div className='w-8'> <ButtonComponent style="clean" action={() => changeDay(date.plus(Duration.fromObject({ days: 1 })))}><i className="fa fa-chevron-right"></i></ButtonComponent></div>}
         </div>
 
         <div className='mb-2'>

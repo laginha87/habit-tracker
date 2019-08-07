@@ -57,16 +57,30 @@ const MoneyInput = (props : InputProps) => {
 
 const TimeInput = (props: InputProps) => {
     const { updateSpend, value } = props;
+    const minInput = React.useRef<HTMLInputElement>();
+    const hourInput = React.useRef<HTMLInputElement>();
 
-    const onChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const onMinuteChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.currentTarget.value
-        updateSpend(parseFloat(value === '' ? '0' : value))
-    }, [updateSpend]);
+        const minutes = parseFloat(value === '' ? '0' : value)
+        const hours = parseFloat(hourInput.current.value === '' ? '0' : hourInput.current.value)
+        if(minutes > 9) {
+            hourInput.current.focus();
+        }
+        updateSpend( hours * 60 + minutes);
+    }, [updateSpend, minInput, hourInput]);
+
+    const onHourChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.currentTarget.value
+        const hours = parseFloat(value === '' ? '0' : value)
+        const minutes = parseFloat(minInput.current.value === '' ? '0' : minInput.current.value)
+        updateSpend( hours * 60 + minutes);
+    }, [updateSpend, hourInput, minInput]);
 
     return <div className='flex text-white-100 justify-end items-end text-2xl'>
-        <input className='bg-transparent   focus-none outline-none text-right w-12 text-right' type="number" placeholder='00' inputMode="decimal" step='1'  onChange={onChange} />
+        <input className='bg-transparent focus-none outline-none text-right w-12 text-right' ref={hourInput} type="number" placeholder='00' inputMode="decimal" step='1'  onChange={onHourChange} />
         <div className=''>h</div>
-        <input className='bg-transparent   focus-none outline-none text-right w-12 text-right' type="number" placeholder='00' inputMode="decimal" step='5'  onChange={onChange} />
+        <input className='bg-transparent focus-none outline-none text-right w-12 text-right' ref={minInput} type="number" placeholder='00' inputMode="decimal" step='5'  onChange={onMinuteChange} />
         <div className=''>m</div>
     </div>
 }

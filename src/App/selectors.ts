@@ -6,6 +6,7 @@ import { List } from "immutable";
 
 export const getDays = (state: State) => state.app.days;
 export const getDate = (state: State) => state.app.day;
+export const getSpent = (state: State) => state.app.spent;
 
 export const getResultForDay = createSelector(getDays, getDate, (days: List<DayData>, date: DateTime): DayResult => {
     const entry = days.find((e) => e.date.hasSame(date, 'day'));
@@ -32,8 +33,8 @@ const calculateTotal = createSelector(getDays, (res: List<DayData>) => {
     }, { total: 0, chain: 0, previous: null });
 })
 
-export const getTotal = createSelector(calculateTotal, (totals) => {
-    return totals.total;
+export const getTotal = createSelector(calculateTotal, getSpent, (totals, spent) => {
+    return totals.total - spent.reduce((a,b) => a + b, 0);
 })
 
 export const getChain = createSelector(calculateTotal, (totals) => {

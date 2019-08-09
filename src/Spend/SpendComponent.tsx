@@ -1,15 +1,16 @@
 import * as React from 'react';
 
-import { WalletExtended } from '../model/types';
+import { WalletExtended, SpendType } from '../model/types';
 import { WalletComponent } from '../common/WalletComponent';
 import { convertToEuros, convertToTime, convertFromTime, convertFromEuros } from '../App/selectors';
 import classnames from 'classnames';
 import { ButtonComponent } from '../common/ButtonComponent';
+import { DateTime } from 'luxon';
 
 
 
 export type SpendDispatchProps = {
-    submitSpend(credits : number) : void
+    submitSpend(value: number, date : DateTime, spendType: SpendType, description: string) : void
 }
 
 export type SpendStateProps = {
@@ -19,11 +20,9 @@ export type SpendStateProps = {
 
 type SpendProps = SpendStateProps & SpendDispatchProps;
 
-type ToggleState = "money" | "time"
-
 type ToggleProps = {
-    toggle: ToggleState,
-    updateToggle: (t: ToggleState) => void
+    toggle: SpendType,
+    updateToggle: (t: SpendType) => void
 }
 
 const Toggle = (props: ToggleProps) => {
@@ -52,7 +51,7 @@ const MoneyInput = (props : InputProps) => {
     }, [updateSpend]);
 
     const value = props.value > 0 ? props.value.toFixed(2) : (0).toFixed(2);
-    return <input type="number" placeholder='0' inputMode="decimal" step='0.1' className='bg-transparent text-right text-right text-2xl w-full focus-none outline-none text-white-100' value={value} onChange={onChange} />
+    return <input type="number" placeholder='0' inputMode="decimal" step='0.1' className='bg-transparent text-2xl w-full focus-none outline-none text-white-100' value={value} onChange={onChange} />
 }
 
 const TimeInput = (props: InputProps) => {
@@ -77,10 +76,10 @@ const TimeInput = (props: InputProps) => {
         updateSpend( hours * 60 + minutes);
     }, [updateSpend, hourInput, minInput]);
 
-    return <div className='flex text-white-100 justify-end items-end text-2xl'>
-        <input className='bg-transparent focus-none outline-none text-right w-12 text-right' ref={hourInput} type="number" placeholder='00' inputMode="decimal" step='1'  onChange={onHourChange} />
+    return <div className='flex text-white-100 justify-start items-start text-2xl'>
+        <input className='bg-transparent focus-none outline-none w-12' ref={hourInput} type="number" placeholder='00' inputMode="decimal" step='1'  onChange={onHourChange} />
         <div className=''>h</div>
-        <input className='bg-transparent focus-none outline-none text-right w-12 text-right' ref={minInput} type="number" placeholder='00' inputMode="decimal" step='5'  onChange={onMinuteChange} />
+        <input className='bg-transparent focus-none outline-none w-12' ref={minInput} type="number" placeholder='00' inputMode="decimal" step='5'  onChange={onMinuteChange} />
         <div className=''>m</div>
     </div>
 }
@@ -88,9 +87,15 @@ const TimeInput = (props: InputProps) => {
 export const SpendComponent = (props: SpendProps) => {
     const { wallet, submitSpend } = props;
 
-    const [toggle, updateToggle] = React.useState<ToggleState>("money")
+    const [toggle, updateToggle] = React.useState<SpendType>("money")
     const [spend, updateSpend] = React.useState(0)
-    const toggleChange = React.useCallback((toggle: ToggleState) => {
+    const [description, updateDescription] = React.useState("");
+
+    const updateDescriptionCb = React.useCallback((e : React.ChangeEvent<HTMLInputElement>) => {
+        updateDescription(e.target.value);
+    }, [updateDescription])
+
+    const toggleChange = React.useCallback((toggle: SpendType) => {
         updateSpend(0)
         updateToggle(toggle)
     }, [])
@@ -99,8 +104,8 @@ export const SpendComponent = (props: SpendProps) => {
     const credits = converter(spend);
 
     const submitValue = React.useCallback(() => {
-        submitSpend(credits)
-    }, [credits, toggle, submitSpend])
+        submitSpend(credits, DateTime.local(), toggle, description);
+    }, [credits, toggle, submitSpend, description])
 
 
     const newCredits = wallet.total - credits;
@@ -124,7 +129,7 @@ export const SpendComponent = (props: SpendProps) => {
         <Toggle toggle={toggle} updateToggle={toggleChange} />
 
         <InputComponent updateSpend={updateSpend} value={spend} />
-
+        <input type='text' onChange={updateDescriptionCb} className='bg-transparent focus-none outline-none text-white-100 border-b border-white-100 text-xl w-full' placeholder='What am I spending credits on?'/>
         <WalletComponent wallet={walletAfter}></WalletComponent>
         <ButtonComponent style="primary" action={submitValue}> Submit </ButtonComponent>
     </div>;

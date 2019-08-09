@@ -34,7 +34,7 @@ const calculateTotal = createSelector(getDays, (res: List<DayData>) => {
 })
 
 export const getTotal = createSelector(calculateTotal, getSpent, (totals, spent) => {
-    return totals.total - spent.reduce((a,b) => a + b, 0);
+    return totals.total - spent.reduce((a, {value}) => a + value, 0);
 })
 
 export const getChain = createSelector(calculateTotal, (totals) => {

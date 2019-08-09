@@ -1,11 +1,11 @@
-import { Wallet, DayData, DayResult } from "../model/types";
+import { Wallet, DayData, DayResult, SpendData, SpendType } from "../model/types";
 import { DateTime } from "luxon";
 import { List } from 'immutable';
 
 export type AppState = {
     days: List<DayData>;
     day: DateTime;
-    spent: List<number>;
+    spent: List<SpendData>;
 }
 
 const SET_DAY_ACTIVITY = "SET_DAY_ACTIVITY"
@@ -41,13 +41,19 @@ const SPEND_CREDITS = "SPEND_CREDITS"
 
 type SpendCreditsAction = {
     type: typeof SPEND_CREDITS;
-    spent: number;
+    value: number;
+    date: DateTime;
+    spendType: SpendType;
+    description: string;
 }
 
-export const spendCreditsAction = (spent: number): SpendCreditsAction => (
+export const spendCreditsAction = (value: number, date : DateTime, spendType: SpendType, description: string): SpendCreditsAction => (
     {
-        spent,
-        type: SPEND_CREDITS
+        type: SPEND_CREDITS,
+        value,
+        spendType,
+        date,
+        description
     }
 )
 
@@ -108,7 +114,12 @@ export const reducer = (state: AppState = INITIAL_STATE, action: Action) => {
         case SPEND_CREDITS:
             return {
                 ...state,
-                spent: state.spent.push(action.spent)
+                spent: state.spent.push({
+                    value: action.value,
+                    type: action.spendType,
+                    date: action.date,
+                    description: action.description
+                })
             }
         default:
             return state;

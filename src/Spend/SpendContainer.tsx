@@ -8,6 +8,8 @@ import { State } from '../reducer';
 import { getWalletExtended } from "../App/selectors";
 import { spendCreditsAction } from "../App";
 import { routerActions } from "connected-react-router";
+import { DateTime } from "luxon";
+import { SpendType } from "../model/types";
 
 
 const mapStateToProps = (state: State): SpendStateProps => {
@@ -19,8 +21,8 @@ const mapStateToProps = (state: State): SpendStateProps => {
 const mapDispatchToProps = (dispatch): SpendDispatchProps => {
 
     return {
-        submitSpend: ( number : number) => {
-            dispatch(spendCreditsAction(number))
+        submitSpend: ( value: number, date : DateTime, spendType: SpendType, description: string) => {
+            dispatch(spendCreditsAction(value, date , spendType, description))
             dispatch(routerActions.push('/'))
         }
     };

@@ -16,7 +16,16 @@ export type Wallet = {
     total: number;
 }
 
+export type SpendType = "money" | "time";
+
 export type WalletExtended = {
     minutes: number;
     euros: number;
 } & Wallet;
+
+export type SpendData = {
+    date: DateTime;
+    type: SpendType;
+    value: number;
+    description: string;
+}

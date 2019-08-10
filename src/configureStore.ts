@@ -1,6 +1,5 @@
 import { createBrowserHistory } from 'history'
 import { applyMiddleware, compose, createStore } from 'redux'
-import { routerMiddleware } from 'connected-react-router'
 import { createRootReducer } from './reducer';
 import { List } from 'immutable';
 import { DayData } from './model/types';
@@ -44,12 +43,6 @@ export default function configureStore() {
   const store = createStore(
     createRootReducer(history), // root reducer with router state
     loadState(),
-    composeEnhancers(
-      applyMiddleware(
-        routerMiddleware(history), // for dispatching history actions
-        // ... other middlewares ...
-      ),
-    ),
   )
 
   store.subscribe(() => {

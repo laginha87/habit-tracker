@@ -9,6 +9,7 @@ import { ListComponent } from '../common/ListComponent';
 import { chainToValue } from '../App/selectors';
 import { DateTime, Duration } from 'luxon';
 import { ButtonComponent } from '../common/ButtonComponent';
+import { Link } from "react-router-dom";
 
 
 
@@ -40,7 +41,7 @@ export const DashboardComponent = (props: DashboardProps) => {
             <div className='text-2xl text-blue-100 flex-grow text-center' onClick={() => location.reload()}>
                 {dateFormatted}
             </div>
-            { date.diffNow('days').days <= -1 &&  <div className='w-8'> <ButtonComponent style="clean" action={() => changeDay(date.plus(Duration.fromObject({ days: 1 })))}><i className="fa fa-chevron-right"></i></ButtonComponent></div>}
+            { date.diffNow('days').days <= -1 ?  <div className='w-8'> <ButtonComponent style="clean" action={() => changeDay(date.plus(Duration.fromObject({ days: 1 })))}><i className="fa fa-chevron-right"></i></ButtonComponent></div> : <div className='w-8'/>}
         </div>
 
         <div className='mb-2'>
@@ -63,7 +64,7 @@ export const DashboardComponent = (props: DashboardProps) => {
 
             <div className='w-full'>
                 <ButtonComponent style='primary-outline' size="large">
-                    <a href="/spend"> SPEND </a>
+                    <Link to="/spend"> SPEND </Link>
                 </ButtonComponent>
             </div>
         </SectionComponent>

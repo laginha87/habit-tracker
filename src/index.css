@@ -12,3 +12,25 @@ html {
 @tailwind components;
 
 @tailwind utilities;
+
+
+.slide-enter {
+  transform: translateY(100%);
+  z-index: 2;
+  position: relative;
+}
+
+.slide-enter.slide-enter-active {
+  transform: translateY(0);
+  transition: transform 1000ms ease-in;
+}
+
+.slide-exit {
+  transform: translateY(-100%);
+  z-index: 1;
+  position: relative;
+}
+
+.slide-exit.slide-exit-active {
+  /* transform: translateY(0) */
+}

@@ -131,7 +131,7 @@ export const SpendComponent = (props: SpendProps) => {
         <InputComponent updateSpend={updateSpend} value={spend} />
         <input type='text' onChange={updateDescriptionCb} className='bg-transparent focus-none outline-none text-white-100 border-b border-white-100 text-xl w-full' placeholder='What am I spending credits on?'/>
         <WalletComponent wallet={walletAfter}></WalletComponent>
-        <ButtonComponent style="primary" action={submitValue}> Submit </ButtonComponent>
+        <ButtonComponent style="primary" action={submitValue} disabled={credits > 0}> Submit </ButtonComponent>
     </div>;
     }
 

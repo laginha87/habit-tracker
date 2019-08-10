@@ -21,10 +21,15 @@ type ButtonProps = {
     children: React.ReactNode,
     style: ButtonStyle,
     size?: ButtonSize,
+    disabled?: boolean,
     action?: () => void,
 }
 
 export const ButtonComponent = (props: ButtonProps) => {
+    const {
+        action, children, disabled
+    } = props;
+
     const className =
         classnames(
             'rounded',
@@ -32,14 +37,23 @@ export const ButtonComponent = (props: ButtonProps) => {
             'w-full',
             'flex',
             'justify-center',
-            'cursor-pointer',
+            {'cursor-pointer': !disabled},
             STYLES[props.style],
+            {'cursor-not-allowed': disabled},
             SIZES[props.size || 'medium']
 
         );
+
+    const onClick = React.useCallback(() => {
+        if(disabled) {
+            return
+        }
+        action()
+    }, [disabled, action])
+
     return <div
         className={className}
-        onClick={props.action}>
-        {props.children}
+        onClick={onClick}>
+        {children}
     </div>
 }

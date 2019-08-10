@@ -64,7 +64,7 @@ export const DashboardComponent = (props: DashboardProps) => {
 
             <div className='w-full'>
                 <ButtonComponent style='primary-outline' size="large">
-                    <Link to="/spend"> SPEND </Link>
+                    <Link to={{pathname: "/spend", state:{ duration:{ enter: 1000, exit: 1000 }, transition:"slide-in"} }}> SPEND </Link>
                 </ButtonComponent>
             </div>
         </SectionComponent>

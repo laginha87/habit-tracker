@@ -14,23 +14,42 @@ html {
 @tailwind utilities;
 
 
-.slide-enter {
+.slide-in-enter {
   transform: translateY(100%);
   z-index: 2;
   position: relative;
 }
 
-.slide-enter.slide-enter-active {
+.slide-in-enter.slide-in-enter-active {
   transform: translateY(0);
   transition: transform 1000ms ease-in;
 }
 
-.slide-exit {
+.slide-in-exit {
   transform: translateY(-100%);
   z-index: 1;
   position: relative;
 }
 
-.slide-exit.slide-exit-active {
-  /* transform: translateY(0) */
+
+.slide-out-enter {
+  /* transform: translateY(100%); */
+  z-index: 1;
+  position: relative;
+}
+
+/* .slide-out-enter.slide-out-enter-active {
+  transform: translateY(0);
+  transition: transform 1000ms ease-in;
+} */
+
+.slide-out-exit {
+  transform: translateY(-100%);
+  transition: transform 1000ms ease-in;
+  z-index: 2;
+  position: relative;
+}
+
+.slide-out-exit.slide-out-exit-active {
+  transform: translateY(0%);
 }

@@ -1,29 +1,32 @@
 import { getTotal } from "./selectors";
 import { List } from "immutable";
 import { DateTime, Duration } from "luxon";
+import { AppState } from "./reducer";
+import { DayData } from "../model/types";
 
 let TOTAL = 100
 
-const d = (result: "good" | "bad") => ({ date: DateTime.local().minus(Duration.fromObject({ days: TOTAL-- })), result })
+const d = (result: "good" | "bad") : DayData => ({ date: DateTime.local().minus(Duration.fromObject({ days: TOTAL-- })), result })
 
-const goodTimes = (n : number) => List.of(...(new Array(n).fill(0)).map(() => d("good")));
+const goodTimes = (n : number) : List<DayData> => List.of(...(new Array(n).fill(0)).map(() => d("good")));
 
 test('getTotal', () => {
     ([
         [List.of(d("good")), 1],
         [List.of(d("bad")), 0],
-        [goodTimes(2), 2],
-        [goodTimes(6), 10],
-        [goodTimes(10), 30]
+        [goodTimes(2), 7],
+        [goodTimes(6), 19],
+        [goodTimes(10), 39],
+        [goodTimes(15), 69]
 
-    ] as any).forEach(([days, expected]) => {
-        const state = {
-            app: {
-                days
-            }
+    ] as Array<[List<DayData>, number]>).forEach(([days, expected]) => {
+        const app : AppState = {
+            days,
+            day: DateTime.local(),
+            spent: List()
         }
 
-        expect(getTotal(state as any)).toEqual(expected)
+        expect(getTotal({app})).toEqual(expected)
     })
 
 })

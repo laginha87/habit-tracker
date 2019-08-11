@@ -1,4 +1,4 @@
-import { getTotal } from "./selectors";
+import { getTotal, getLevel } from "./selectors";
 import { List } from "immutable";
 import { DateTime, Duration } from "luxon";
 import { AppState } from "./reducer";
@@ -14,10 +14,12 @@ test('getTotal', () => {
     ([
         [List.of(d("good")), 1],
         [List.of(d("bad")), 0],
-        [goodTimes(2), 7],
-        [goodTimes(6), 19],
-        [goodTimes(10), 39],
-        [goodTimes(15), 69]
+        [goodTimes(1), 1],
+        [goodTimes(2), 4],
+        [goodTimes(3), 6],
+        [goodTimes(6), 17],
+        [goodTimes(10), 36],
+        [goodTimes(15), 65]
 
     ] as Array<[List<DayData>, number]>).forEach(([days, expected]) => {
         const app : AppState = {
@@ -27,6 +29,31 @@ test('getTotal', () => {
         }
 
         expect(getTotal({app})).toEqual(expected)
+    })
+
+})
+
+
+
+test('getLevel', () => {
+    ([
+        [List.of(d("good")), 1],
+        [List.of(d("bad")), 0],
+        [goodTimes(1), 1],
+        [goodTimes(2), 2],
+        [goodTimes(4), 3],
+        [goodTimes(7), 4],
+        [goodTimes(11), 5],
+        [goodTimes(16), 6]
+
+    ] as Array<[List<DayData>, number]>).forEach(([days, expected]) => {
+        const app : AppState = {
+            days,
+            day: DateTime.local(),
+            spent: List()
+        }
+
+        expect(getLevel({app})).toEqual(expected)
     })
 
 })

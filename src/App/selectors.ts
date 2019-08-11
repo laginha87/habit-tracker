@@ -14,43 +14,51 @@ export const getResultForDay = createSelector(getDays, getDate, (days: List<DayD
 });
 
 const calculateTotal = createSelector(getDays, (res: List<DayData>) => {
-    return res.sortBy(({ date }: DayData) => date).reduce(({ previous, chain, total }, el, key) => {
-        if (previous === null) {
-            return { previous: el, chain: el.result === 'good' ? 1 : 0, total: el.result === 'good' ? chainToValue(1) : 0 }
-        }
+    return res.sortBy(({ date }: DayData) => date).reduce(({ previous, chain, total, level, levelChain }, el, key) => {
+        const good = (previous === null || el.date.startOf('day').diff(previous.date.startOf('day'), 'days').days) && el.result == "good";
 
-        if (el.result === "bad") {
-            return { previous: el, chain: 0, total };
-        }
-        const good = (el.date.startOf('day').diff(previous.date.startOf('day'), 'days').days) && el.result == "good";
+        previous = el;
         chain++;
+        levelChain++;
+
+        if (!good) {
+            chain = levelChain =  0
+            level= Math.max(level - 1, 0)
+        } else {
+            total += level;
+
+            if(levelChain >= level) {
+                level++;
+                levelChain = 0;
+                total += level
+            }
+        }
 
         return {
-            previous: el,
-            chain: good ? chain : 0,
-            total: total + (good ? chainToValue(chain) : 0)
+            previous,
+            chain,
+            total,
+            level,
+            levelChain
         }
-    }, { total: 0, chain: 0, previous: null });
+    }, { total: 0, chain: 0, previous: null, level: 0, levelChain: 0 });
 })
 
 export const getTotal = createSelector(calculateTotal, getSpent, (totals, spent) => {
-    return totals.total - spent.reduce((a, {value}) => a + value, 0);
+    return totals.total - spent.reduce((a, { value }) => a + value, 0);
 })
 
 export const getChain = createSelector(calculateTotal, (totals) => {
     return totals.chain;
 })
 
-export const chainToValue = (value: number): number => {
-    if (value > 10) {
-        return 10
-    } else if (value > 5) {
-        return 5
-    } else {
-        return 1
-    }
+export const getLevel = createSelector(calculateTotal, (totals) => {
+    return totals.level;
+})
 
-}
+export const getLevelChain = createSelector(calculateTotal, (totals) => {
+    return totals.levelChain;
+})
 
 export const getDateFormatted = createSelector(getDate, (date: DateTime): string => {
     if (date.hasSame(DateTime.local(), 'day')) {
@@ -68,11 +76,11 @@ export const getDateFormatted = createSelector(getDate, (date: DateTime): string
     return date.toFormat('dd/MM/yyyy');
 })
 
-export const convertToEuros = (credits : number) => parseFloat((credits * 0.1).toFixed(2))
-export const convertToTime = (credits : number) => credits * 10
+export const convertToEuros = (credits: number) => parseFloat((credits * 0.1).toFixed(2))
+export const convertToTime = (credits: number) => credits * 10
 
-export const convertFromTime = (minutes : number) => minutes * 0.1
-export const convertFromEuros = (euros : number) => euros * 10
+export const convertFromTime = (minutes: number) => minutes * 0.1
+export const convertFromEuros = (euros: number) => euros * 10
 
 export const getWalletExtended = createSelector(getTotal, (total) => ({
     euros: convertToEuros(total),

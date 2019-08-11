@@ -21,6 +21,8 @@ export type DashboardDispatchProps = {
 export type DashboardStateProps = {
     wallet: WalletExtended;
     chain: number;
+    level: number;
+    levelChain: number;
     day: DayDataExtended;
 };
 
@@ -31,7 +33,7 @@ export const DashboardComponent = (props: DashboardProps) => {
         dateFormatted,
         date,
         result
-    }, wallet, chain, setDayBad, setDayGood, changeDay
+    }, wallet, chain, level, levelChain, setDayBad, setDayGood, changeDay
     } = props;
 
     return <div className="px-2 h-screen py-4 w-screen overflow-scroll" style={{ background: 'linear-gradient(0deg, rgba(39,87,138,1) 0%, rgba(30,91,172,1) 53%, rgba(50,50,179,1) 93%)' }}>
@@ -53,8 +55,14 @@ export const DashboardComponent = (props: DashboardProps) => {
                 <DataRowComponent label="Current Streak">
                     {chain}
                 </DataRowComponent>
+                <DataRowComponent label="Level">
+                    {level}
+                </DataRowComponent>
+                <DataRowComponent label="To Next Level">
+                    {level - levelChain}
+                </DataRowComponent>
                 <DataRowComponent label="Next Ok">
-                    {chainToValue(chain + 1)} credits
+                    {level} credits
                 </DataRowComponent>
             </ListComponent>
         </SectionComponent>

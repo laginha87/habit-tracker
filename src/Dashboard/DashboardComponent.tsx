@@ -69,6 +69,7 @@ export const DashboardComponent = (props: DashboardProps) => {
         </SectionComponent>
         <SectionComponent title="wallet">
             <WalletComponent wallet={wallet} />
+            <div className="mb-20" />
 
             <div className='absolute w-full flex justify-end' style={{bottom: 15, right: 15}}>
                 <Link to={{pathname: "/spend", state:{ duration:{ enter: 1000, exit: 1000 }, transition:"slide-in"} }} className='text-xl rounded-full bg-white-100 shadow-lg text-blue-500 w-10 h-10 flex justify-center items-center'> + </Link>

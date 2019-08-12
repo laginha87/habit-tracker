@@ -7,7 +7,6 @@ import { connect } from "react-redux";
 import { State } from '../reducer';
 import { getWalletExtended } from "../App/selectors";
 import { spendCreditsAction } from "../App";
-import { routerActions } from "connected-react-router";
 import { DateTime } from "luxon";
 import { SpendType } from "../model/types";
 
@@ -23,7 +22,6 @@ const mapDispatchToProps = (dispatch): SpendDispatchProps => {
     return {
         submitSpend: ( value: number, date : DateTime, spendType: SpendType, description: string) => {
             dispatch(spendCreditsAction(value, date , spendType, description))
-            dispatch(routerActions.push('/'))
         }
     };
 }

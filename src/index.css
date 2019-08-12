@@ -12,3 +12,48 @@ html {
 @tailwind components;
 
 @tailwind utilities;
+
+
+.slide-in-enter {
+  transform: translateY(100%);
+  z-index: 2;
+  position: relative;
+}
+
+.slide-in-enter.slide-in-enter-active {
+  transform: translateY(0);
+  transition: transform 1000ms ease-out;
+  box-shadow: 0px -10px 15px -6px rgba(0,0,0,0.36);
+}
+
+.slide-in-exit {
+  transform: translateY(-100%);
+  z-index: 1;
+  position: relative;
+}
+
+
+.slide-out-enter {
+  /* transform: translateY(100%); */
+  z-index: 1;
+  position: relative;
+}
+
+/* .slide-out-enter.slide-out-enter-active {
+  transform: translateY(0);
+  transition: transform 1000ms ease-in;
+} */
+
+.slide-out-exit {
+  transform: translateY(-100%);
+  z-index: 2;
+  position: relative;
+}
+
+.slide-out-exit.slide-out-exit-active {
+  transform: translateY(0);
+  transition: transform 1000ms ease-in;
+  z-index: 2;
+  position: relative;
+  box-shadow: 0px -10px 15px -6px rgba(0,0,0,0.36);
+}

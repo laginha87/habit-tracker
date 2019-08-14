@@ -10,7 +10,9 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 import { Dashboard } from '../Dashboard';
 import { Spend } from "../Spend";
+import { Login } from "../Login";
 import { Firebase } from "../model/firebase";
+import { ProtectedRoute } from "../common/ProtectedRoute";
 
 interface AppProps {
     firebase: Firebase,
@@ -33,8 +35,9 @@ const InnerAppComponent = ({ location, firebase }: AppProps) =>
             key={location.key}
         >
             <Switch location={location}>
-                <Route path="/spend" component={Spend} />
-                <Route path="/" component={Dashboard} />
+                <Route path="/login" component={Login}/>
+                <ProtectedRoute path="/spend" Component={Spend} firebase={firebase}/>
+                <ProtectedRoute path="/" Component={Dashboard} firebase={firebase}/>
             </Switch>
         </CSSTransition>
     </TransitionGroup>}

@@ -4,7 +4,8 @@ import "firebase/auth";
 
 export class Firebase {
   db: firebase.database.Database;
-  user: firebase.User;
+  currentUser: firebase.User;
+  isAuthenticated = false;
 
   setUp() {
     const app = firebase.initializeApp({
@@ -20,12 +21,10 @@ export class Firebase {
     this.db = app.database();
     this.db.goOnline();
     // window.user = firebase.auth().currentUser;
-
-    firebase.auth().onAuthStateChanged(function(user) {
-      console.log(user)
-    });
-
-
+    firebase.auth().onAuthStateChanged(((user) => {
+      this.isAuthenticated = user != null;
+      this.currentUser = user;
+    }).bind(this));
   }
 
   get() {

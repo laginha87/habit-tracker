@@ -30,6 +30,8 @@ export const ButtonComponent = (props: ButtonProps) => {
         action, children, disabled
     } = props;
 
+    console.log(disabled);
+
     const className =
         classnames(
             'rounded',

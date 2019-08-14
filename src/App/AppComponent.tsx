@@ -5,14 +5,22 @@ import {
     withRouter
 
 } from 'react-router';
-
+import { Location } from 'history';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 import { Dashboard } from '../Dashboard';
 import { Spend } from "../Spend";
+import { Firebase } from "../model/firebase";
 
-const InnerAppComponent = ({ location }) =>
-    <TransitionGroup childFactory={ child => {
+interface AppProps {
+    firebase: Firebase,
+    location: Location
+}
+
+const InnerAppComponent = ({ location, firebase }: AppProps) =>
+    {
+
+        return <TransitionGroup childFactory={ child => {
         if(!location.state || !location.state.transition) {
             return child;
         }
@@ -29,6 +37,6 @@ const InnerAppComponent = ({ location }) =>
                 <Route path="/" component={Dashboard} />
             </Switch>
         </CSSTransition>
-    </TransitionGroup>
+    </TransitionGroup>}
 
-export const AppComponent = withRouter(InnerAppComponent);
+export const AppComponent = withRouter(InnerAppComponent as any);

@@ -43,6 +43,7 @@ export default function configureStore() {
   const store = createStore(
     createRootReducer(history), // root reducer with router state
     loadState(),
+    composeEnhancers()
   )
 
   store.subscribe(() => {

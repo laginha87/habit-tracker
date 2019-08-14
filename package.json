@@ -26,6 +26,7 @@
     "@fortawesome/fontawesome-free-webfonts": "^1.0.9",
     "classnames": "^2.2.6",
     "connected-react-router": "^6.5.2",
+    "firebase": "^6.3.5",
     "immutable": "^4.0.0-rc.12",
     "luxon": "^1.17.1",
     "react": ">=15",

@@ -4,14 +4,18 @@ import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { AppComponent } from './App';
 import configureStore, { history } from "./configureStore";
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { Firebase } from "./model/firebase";
 
 const store = configureStore();
+const firebase = new Firebase();
+
+firebase.setUp();
+
 
 ReactDOM.render(
     <Provider store={store}>
         <Router history={history}>
-            <AppComponent />
+            <AppComponent firebase={firebase}/>
         </Router>
     </Provider>
     , document.getElementById("root"));

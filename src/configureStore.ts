@@ -13,7 +13,9 @@ const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ||
 
 const loadState = async (firebase : Firebase) => {
   let state = await firebase.get();
-
+  if(state === undefined) {
+    return {};
+  }
   return {
     app: {
       day: DateTime.local().startOf('day'),

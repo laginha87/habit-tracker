@@ -2,6 +2,7 @@ import * as React from "react";
 import { Firebase } from "../model/firebase";
 import { useDispatch } from "react-redux";
 import { routerActions } from "connected-react-router";
+import {Link} from 'react-router-dom';
 
 interface Props {
     firebase: Firebase;
@@ -38,6 +39,7 @@ export const LoginComponent = ({ firebase }: Props) => {
                     <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Sign In</button>
                 </div>
             </form>
+            <Link to='/'>Take me away</Link>
         </div>
     </div>;
 }

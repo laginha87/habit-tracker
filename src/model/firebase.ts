@@ -28,7 +28,6 @@ export class Firebase {
     this.db = app.firestore();
     this.auth = app.auth();
     this.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-
     this.auth.onAuthStateChanged(((user) => {
       this.isAuthenticated = user != null;
       this.currentUser = user;
@@ -36,16 +35,28 @@ export class Firebase {
   }
 
   async get() {
-    const doc = await this.doc();
-    if(!doc) {
-      return doc;
+    try {
+      const doc = await this.doc();
+      if(!doc) {
+        return doc;
+      }
+      return doc.data();
+    } catch(error){
+      console.log(error)
+      return {}
     }
-    return doc.data();
   }
 
   async set(doc) {
-    const id = (await this.doc()).id
-    this.db.collection('usage').doc(id).set(doc);
+    if(doc.days.length === 0) {
+      return
+    }
+    try {
+      const id = (await this.doc()).id
+      this.db.collection('usage').doc(id).set(doc);
+    } catch {
+      return {};
+    }
   }
 
   async doc(){

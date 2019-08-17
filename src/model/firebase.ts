@@ -50,7 +50,7 @@ export class Firebase {
 
   async doc(){
     if(!this._doc) {
-      this._doc = (await this.db.collection('usage').where('origin', '==', process.env.NODE_ENV).get()).docs[0]
+      this._doc = (await this.db.collection('usage').where('origin', '==', process.env.FIREBASE_ENV).get()).docs[0]
     }
 
     return this._doc;

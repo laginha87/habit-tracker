@@ -14,23 +14,11 @@ const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ||
 const loadState = async (firebase : Firebase) => {
   let state = await firebase.get();
 
-  if(!state || state.days.length === 0 && state.spent.length === 0) {
-    const serializedState = localStorage.getItem('state');
-    state = JSON.parse(serializedState);
-    return {
-      app: {
-        day: DateTime.fromISO(state.app.day),
-        days: List.of(...state.app.days.map(({result, date}) => ({result, date: DateTime.fromISO(date)}))),
-        spent: List.of(...state.app.spent.map(({description, type, value, date}) => ({description, type, value, date: DateTime.fromISO(date)})))
-      }
-    };
-  } else {
-    return {
-      app: {
-        day: DateTime.local().startOf('day'),
-        days: List.of(...(state.days || []).map(({result, date})=> ({result, date: DateTime.fromSeconds(date.seconds)}))),
-        spent: List.of(...(state.spent || []).map(({description, type, value, date})=> ({description, type, value, date: DateTime.fromSeconds(date.seconds)})))
-      }
+  return {
+    app: {
+      day: DateTime.local().startOf('day'),
+      days: List.of(...(state.days || []).map(({result, date})=> ({result, date: DateTime.fromSeconds(date.seconds)}))),
+      spent: List.of(...(state.spent || []).map(({description, type, value, date})=> ({description, type, value, date: DateTime.fromSeconds(date.seconds)})))
     }
   }
 };
@@ -49,12 +37,11 @@ export default async function configureStore(firebase : Firebase) {
   )
 
   store.subscribe(() => {
-    const {days, day, spent} = store.getState().app;
+    const {days, spent} = store.getState().app;
     const state = {
-      day: day.toISO(),
-      days: (days as List<DayData>).toJS().map(({result, date} : DayData) => ({result, date: new firestore.Timestamp(date.toSeconds(), 0)})),
-      spent: (spent as List<SpendData>).toJS().map(({date, type, value, description}) => ({date: new firestore.Timestamp(date.toSeconds(), 0), type, value, description})),
-      origin: process.env.NODE_ENV
+      days: (days as List<DayData>).toJS().map(({result, date} : DayData) => ({result, date: new firestore.Timestamp(date.startOf('day').toSeconds(), 0)})),
+      spent: (spent as List<SpendData>).toJS().map(({date, type, value, description}) => ({date: new firestore.Timestamp(date.startOf('day').toSeconds(), 0), type, value, description})),
+      origin: process.env.FIREBASE_ENV
     };
 
     firebase.set(state);

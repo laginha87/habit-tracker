@@ -6,10 +6,12 @@ import { AppComponent } from './App';
 import configureStore, { history } from "./configureStore";
 import { Firebase } from "./model/firebase";
 
-const store = configureStore();
-const firebase = new Firebase();
 
-firebase.setUp(() => {
+(async () => {
+    const firebase = new Firebase();
+    firebase.setUp();
+    const store = await configureStore(firebase);
+
     ReactDOM.render(
         <Provider store={store}>
             <ConnectedRouter history={history}>
@@ -17,4 +19,4 @@ firebase.setUp(() => {
             </ConnectedRouter>
         </Provider>
         , document.getElementById("root"));
-});
+})()

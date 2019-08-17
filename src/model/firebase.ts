@@ -1,14 +1,14 @@
 import * as firebase from "firebase/app";
-import "firebase/database";
+import "firebase/firestore";
 import "firebase/auth";
 
 export class Firebase {
-  db: firebase.database.Database;
+  db: firebase.firestore.Firestore;
   auth: firebase.auth.Auth;
   currentUser: firebase.User;
   isAuthenticated = false;
 
-  setUp(onReady) {
+  setUp() {
     const app = firebase.initializeApp({
       apiKey: process.env.API_KEY,
       databaseURL: process.env.DATABASE_URL,
@@ -19,32 +19,18 @@ export class Firebase {
       appId: process.env.APP_ID
     });
 
-    this.db = app.database();
-    this.db.goOnline();
+    this.db = app.firestore();
     this.auth = app.auth();
     this.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
 
-    let setup = false;
     this.auth.onAuthStateChanged(((user) => {
       this.isAuthenticated = user != null;
       this.currentUser = user;
-      if (setup == false) {
-        onReady();
-        setup = true;
-      }
     }).bind(this));
   }
 
-  get() {
-    return this.db
-      .ref("ego/2")
-      .once("value")
-      .then(snapshot => snapshot.val().value);
-  }
-
-  set(value) {
-    this.db.ref("ego/2").set({
-      value
-    });
+  async get() {
+    const collection =  await this.db.collection('usage').where('origin', '==', 'staging').get()
+    return collection.docs[0].data();
   }
 }

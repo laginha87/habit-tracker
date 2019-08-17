@@ -9,7 +9,7 @@ type ProtectedRouteProps = {
 };
 
 export const ProtectedRoute = ({ firebase, Component, ...rest }: ProtectedRouteProps) =>
-    <Route {...rest} render={(props) => {
+    <Route {...rest} isAuthenticated={firebase.isAuthenticated} render={(props) => {
         return firebase.isAuthenticated
             ? <Component {...props} />
             : <Redirect to='/login' />

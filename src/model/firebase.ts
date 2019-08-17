@@ -4,10 +4,11 @@ import "firebase/auth";
 
 export class Firebase {
   db: firebase.database.Database;
+  auth: firebase.auth.Auth;
   currentUser: firebase.User;
   isAuthenticated = false;
 
-  setUp() {
+  setUp(onReady) {
     const app = firebase.initializeApp({
       apiKey: process.env.API_KEY,
       databaseURL: process.env.DATABASE_URL,
@@ -20,10 +21,17 @@ export class Firebase {
 
     this.db = app.database();
     this.db.goOnline();
-    // window.user = firebase.auth().currentUser;
-    firebase.auth().onAuthStateChanged(((user) => {
+    this.auth = app.auth();
+    this.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+
+    let setup = false;
+    this.auth.onAuthStateChanged(((user) => {
       this.isAuthenticated = user != null;
       this.currentUser = user;
+      if (setup == false) {
+        onReady();
+        setup = true;
+      }
     }).bind(this));
   }
 

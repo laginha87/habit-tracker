@@ -6,7 +6,6 @@ import { WalletComponent } from '../common/WalletComponent';
 import { SectionComponent } from '../common/SectionComponent';
 import { DataRowComponent } from '../common/DataRowComponent';
 import { ListComponent } from '../common/ListComponent';
-import { chainToValue } from '../App/selectors';
 import { DateTime, Duration } from 'luxon';
 import { ButtonComponent } from '../common/ButtonComponent';
 import { Link } from "react-router-dom";

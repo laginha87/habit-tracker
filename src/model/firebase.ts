@@ -2,11 +2,17 @@ import * as firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
 
+
+const { firestore } = firebase;
+
+export { firestore };
+
 export class Firebase {
-  db: firebase.firestore.Firestore;
+  db: firestore.Firestore;
   auth: firebase.auth.Auth;
   currentUser: firebase.User;
   isAuthenticated = false;
+  _doc : any;
 
   setUp() {
     const app = firebase.initializeApp({
@@ -30,7 +36,23 @@ export class Firebase {
   }
 
   async get() {
-    const collection =  await this.db.collection('usage').where('origin', '==', 'staging').get()
-    return collection.docs[0].data();
+    const doc = await this.doc();
+    if(!doc) {
+      return doc;
+    }
+    return doc.data();
+  }
+
+  async set(doc) {
+    const id = (await this.doc()).id
+    this.db.collection('usage').doc(id).set(doc);
+  }
+
+  async doc(){
+    if(!this._doc) {
+      this._doc = (await this.db.collection('usage').where('origin', '==', process.env.NODE_ENV).get()).docs[0]
+    }
+
+    return this._doc;
   }
 }

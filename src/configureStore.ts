@@ -2,49 +2,36 @@ import { createBrowserHistory } from 'history'
 import { applyMiddleware, compose, createStore } from 'redux'
 import { createRootReducer } from './reducer';
 import { List } from 'immutable';
-import { DayData } from './model/types';
+import { DayData, SpendData } from './model/types';
 import { DateTime } from 'luxon';
 import { routerMiddleware } from 'connected-react-router'
-import { Firebase } from './model/firebase';
+import { Firebase, firestore } from './model/firebase';
 
 export const history = createBrowserHistory()
 
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const loadState = async (firebase : Firebase) => {
-  const state = await firebase.get();
-  return {
-    app: {
-      day: DateTime.local().startOf('day'),
-      days: List.of(...state.days.map(({result, date})=> ({result, date: DateTime.fromSeconds(date.seconds)}))),
-      spent: List.of(...state.spent.map(({description, type, value, date})=> ({description, type, value, date: DateTime.fromSeconds(date.seconds)})))
+  let state = await firebase.get();
+
+  if(!state || state.days.length === 0 && state.spent.length === 0) {
+    const serializedState = localStorage.getItem('state');
+    state = JSON.parse(serializedState);
+    return {
+      app: {
+        day: DateTime.fromISO(state.app.day),
+        days: List.of(...state.app.days.map(({result, date}) => ({result, date: DateTime.fromISO(date)}))),
+        spent: List.of(...state.app.spent.map(({description, type, value, date}) => ({description, type, value, date: DateTime.fromISO(date)})))
+      }
+    };
+  } else {
+    return {
+      app: {
+        day: DateTime.local().startOf('day'),
+        days: List.of(...(state.days || []).map(({result, date})=> ({result, date: DateTime.fromSeconds(date.seconds)}))),
+        spent: List.of(...(state.spent || []).map(({description, type, value, date})=> ({description, type, value, date: DateTime.fromSeconds(date.seconds)})))
+      }
     }
-  }
-  // try {
-  //   const serializedState = localStorage.getItem('state');
-  //   if (serializedState === null) {
-  //     return {};
-  //   }
-  //   const state = JSON.parse(serializedState);
-
-  //   return {
-  //     app: {
-  //       day: DateTime.fromISO(state.app.day),
-  //       days: List.of(...state.app.days.map(({result, date}) => ({result, date: DateTime.fromISO(date)}))),
-  //       spent: List.of(...state.app.spent)
-  //     }
-  //   };
-  // } catch (err) {
-  //   return {};
-  // }
-};
-
-const saveState = (state) => {
-  try {
-    const serializedState = JSON.stringify(state);
-    localStorage.setItem('state', serializedState);
-  } catch {
-    // ignore write errors
   }
 };
 
@@ -63,14 +50,16 @@ export default async function configureStore(firebase : Firebase) {
 
   store.subscribe(() => {
     const {days, day, spent} = store.getState().app;
-    saveState({
-      app: {
-        day: day.toISO(),
-        days: (days as List<DayData>).toJS(),
-        spent: (spent as List<number>).toJS(),
-      }
-    });
+    const state = {
+      day: day.toISO(),
+      days: (days as List<DayData>).toJS().map(({result, date} : DayData) => ({result, date: new firestore.Timestamp(date.toSeconds(), 0)})),
+      spent: (spent as List<SpendData>).toJS().map(({date, type, value, description}) => ({date: new firestore.Timestamp(date.toSeconds(), 0), type, value, description})),
+      origin: process.env.NODE_ENV
+    };
+
+    firebase.set(state);
   });
 
   return store
 }
+

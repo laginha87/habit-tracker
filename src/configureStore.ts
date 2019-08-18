@@ -1,6 +1,6 @@
 import { createBrowserHistory } from 'history'
 import { applyMiddleware, compose, createStore } from 'redux'
-import { createRootReducer } from './reducer';
+import { createRootReducer, State } from './reducer';
 import { List } from 'immutable';
 import { DayData, SpendData } from './model/types';
 import { DateTime } from 'luxon';
@@ -38,13 +38,21 @@ export default async function configureStore(firebase : Firebase) {
     ),
   )
 
+  let lastState : State = undefined;
   store.subscribe(() => {
-    const {days, spent} = store.getState().app;
+    const newState = store.getState();
+    if(lastState && lastState.app.days === newState.app.days && lastState.app.spent === newState.app.spent){
+      return;
+    }
+
+    const { app: {days, spent} } = newState;
     const state = {
       days: (days as List<DayData>).toJS().map(({result, date} : DayData) => ({result, date: new firestore.Timestamp(date.startOf('day').toSeconds(), 0)})),
       spent: (spent as List<SpendData>).toJS().map(({date, type, value, description}) => ({date: new firestore.Timestamp(date.startOf('day').toSeconds(), 0), type, value, description})),
       origin: process.env.FIREBASE_ENV
     };
+
+    lastState = newState;
 
     firebase.set(state);
   });

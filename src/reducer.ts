@@ -4,7 +4,7 @@ import { reducer as appReducer, AppState } from './App';
 
 export type State = {
   app: AppState,
-  router: RouterState
+  router?: RouterState
 }
 
 export const createRootReducer = (history) => combineReducers({

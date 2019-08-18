@@ -30,7 +30,7 @@ const calculateTotal = createSelector(getDays, (res: List<DayData>) => {
             if(levelChain >= level) {
                 level++;
                 levelChain = 0;
-                total += level
+                total += levelToChain(level)
             }
         }
 
@@ -87,3 +87,6 @@ export const getWalletExtended = createSelector(getTotal, (total) => ({
     minutes: convertToTime(total),
     total
 }))
+
+
+export const levelToChain = (level) => level <3 ? 1 : level < 5 ? 5 : level < 10 ? 10 : 15

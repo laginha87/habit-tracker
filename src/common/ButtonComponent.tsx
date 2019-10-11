@@ -47,7 +47,7 @@ export const ButtonComponent = (props: ButtonProps) => {
         if(disabled) {
             return
         }
-        action()
+        if(action){ action() }
     }, [disabled, action])
 
     return <div

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { DayDataExtended, WalletExtended, DayResult } from '../model/types';
+import { DayResult } from '../model/types';
 import { CheckboxesComponent } from './CheckboxesComponent';
 import { WalletComponent } from '../common/WalletComponent';
 import { SectionComponent } from '../common/SectionComponent';
@@ -9,32 +9,39 @@ import { ListComponent } from '../common/ListComponent';
 import { DateTime, Duration } from 'luxon';
 import { ButtonComponent } from '../common/ButtonComponent';
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux';
+import { getDate, getDateFormatted, getResultForDay, getChain, getLevel, getLevelChain, getWalletExtended } from '../App/selectors';
+import { removeDayActivity, setDayActivityAction, setDayAction } from '../App';
 
+export const DashboardComponent = (props) => {
+    const date = useSelector(getDate);
+    const dateFormatted = useSelector(getDateFormatted);
+    const result = useSelector(getResultForDay);
+    const chain = useSelector(getChain);
+    const level = useSelector(getLevel);
+    const levelChain = useSelector(getLevelChain);
+    const wallet = useSelector(getWalletExtended);
 
+    const dispatch = useDispatch();
 
-export type DashboardDispatchProps = {
-    setDayGood: (day: DateTime, result: DayResult) => void;
-    setDayBad: (day: DateTime, result: DayResult) => void;
-    changeDay: (day: DateTime) => void;
-}
+    const setDayBad = React.useCallback((day: DateTime, currentStatus : DayResult) => {
+        if(currentStatus == 'bad') {
+            dispatch(removeDayActivity(day))
+        } else {
+            dispatch(setDayActivityAction(day, "bad"))
+        }
+    }, [dispatch, removeDayActivity, setDayActivityAction]);
 
-export type DashboardStateProps = {
-    wallet: WalletExtended;
-    chain: number;
-    level: number;
-    levelChain: number;
-    day: DayDataExtended;
-};
+    const setDayGood = React.useCallback((day: DateTime, currentStatus : DayResult) => {
+        if(currentStatus == 'good') {
+            dispatch(removeDayActivity(day))
+        } else {
+            dispatch(setDayActivityAction(day, "good"))
+        }
+    }, [dispatch, removeDayActivity, setDayActivityAction]);
 
-type DashboardProps = DashboardStateProps & DashboardDispatchProps;
+    const changeDay = React.useCallback((day: DateTime) => dispatch(setDayAction(day)), [dispatch, setDayAction])
 
-export const DashboardComponent = (props: DashboardProps) => {
-    const { day: {
-        dateFormatted,
-        date,
-        result
-    }, wallet, chain, level, levelChain, setDayBad, setDayGood, changeDay
-    } = props;
 
     return <div className="px-2 h-screen py-4 w-screen overflow-scroll" style={{ background: 'linear-gradient(0deg, rgba(39,87,138,1) 0%, rgba(30,91,172,1) 53%, rgba(50,50,179,1) 93%)' }}>
         <div className='flex mb-10 items-center'>

@@ -1,1 +1,1 @@
-export { SpendContainer as Spend } from './SpendContainer';
+export { SpendComponent as Spend } from './SpendComponent';

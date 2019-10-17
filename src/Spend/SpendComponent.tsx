@@ -11,6 +11,7 @@ import { SpendType, WalletExtended } from '../model/types';
 import { MoneyInputComponent } from './MoneyInputComponent';
 import { TimeInputComponent } from './TimeInputComponent';
 import { Toggle } from './ToggleComponent';
+import { LayoutComponent } from '../common/LayoutComponent';
 
 export const SpendComponent = () => {
 
@@ -51,9 +52,9 @@ export const SpendComponent = () => {
 
     const InputComponent = toggle === 'money' ? MoneyInputComponent : TimeInputComponent
 
-    return <div className="px-2 h-screen py-4 w-screen overflow-scroll" style={{ background: 'linear-gradient(0deg, rgba(39,87,138,1) 0%, rgba(30,91,172,1) 53%, rgba(50,50,179,1) 93%)' }}>
+    return <LayoutComponent>
         <div className='flex'>
-            <div className='w-8'> <ButtonComponent style="clean"><Link to={{pathname: '/', state: {transition: 'slide-out', duration: { enter: 1000, exit: 1000 }}}}><i className="fa fa-times"></i></Link></ButtonComponent></div>
+            <div className='w-8' />
                 <div className='text-2xl text-blue-100 text-center flex-grow' onClick={() => location.reload()}>
                     Spend
                 </div>
@@ -66,6 +67,6 @@ export const SpendComponent = () => {
         <input type='text' onChange={updateDescriptionCb} className='bg-transparent focus-none outline-none text-white-100 border-b border-white-100 text-xl w-full' placeholder='What am I spending credits on?'/>
         <WalletComponent wallet={walletAfter}></WalletComponent>
         <ButtonComponent style="primary" action={submitValue} disabled={credits <= 0}> Submit </ButtonComponent>
-    </div>;
+    </LayoutComponent>;
     }
 
